@@ -14,3 +14,6 @@ helix-importer-ui
 
 # licensed brand fonts: local verification only
 fonts/intact-*
+
+# AEM DAM download cache (build-da.mjs)
+import-work/source/dam/

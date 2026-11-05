@@ -15,6 +15,9 @@ const normalize = (html) => html
   .replace(/> </g, '><')
   .replace(/ (data-block-status|data-nav-init|data-footer-init|loading|title)="[^"]*"/g, '')
   .replace(/src="[^"]*\/icons\//g, 'src="/icons/')
+  .replace(/ class="([^"]*) false"/g, ' class="$1"')
+  .replace(/ alt=""/g, '')
+  .replace(/(class="nav-menu-card-image" src=")[^"]*"/g, '$1"')
   .replace(/&amp;/g, '&');
 
 async function run(url, label) {
@@ -36,8 +39,16 @@ async function run(url, label) {
   await item.locator('summary').click();
   c.accordionOpen = await item.evaluate((d) => d.open && d.querySelector('.accordion-item-body').offsetHeight > 0);
   c.marquee = await page.$eval('.marquee-track', (t) => `${getComputedStyle(t).animationName} ${getComputedStyle(t).animationPlayState}`);
+  await page.click('.nav-menu-toggle');
+  c.megaMenu = await page.$eval('.nav-menu:not([hidden])', (m) => `${m.id} ${m.querySelectorAll('.nav-menu-column').length} columns, card ${!!m.querySelector('.nav-menu-card img')?.naturalWidth}, h ${m.offsetHeight}`).catch(() => 'closed');
+  await page.screenshot({ path: `${outDir}/${label}-megamenu-1440.png` });
+  await page.keyboard.press('Escape');
+  await page.hover('.product-list li:nth-child(2) .product-list-item');
+  await page.waitForTimeout(700);
+  c.productHover = await page.$eval('.product-list li:nth-child(2) .product-list-illustration img', (i) => `${i.naturalWidth > 0} ${getComputedStyle(i.closest('picture')).opacity}`).catch(() => 'none');
   await page.click('.nav-search-toggle');
-  c.searchOpen = await page.$eval('#nav-search', (p) => !p.hidden && p.contains(document.activeElement));
+  c.searchOpen = await page.$eval('#nav-search', (p) => `${!p.hidden && p.contains(document.activeElement)} suggestions ${p.querySelectorAll('.nav-search-suggestion').length}`);
+  await page.screenshot({ path: `${outDir}/${label}-search-1440.png` });
   await page.keyboard.press('Escape');
   c.searchClosed = await page.$eval('#nav-search', (p) => p.hidden);
   await page.click('.footer-notes-toggle');
@@ -51,6 +62,18 @@ async function run(url, label) {
   await page.click('.nav-hamburger');
   c.drawerOpen = await page.$eval('#nav-drawer', (d) => !d.hidden && d.offsetHeight > 0);
   await page.screenshot({ path: `${outDir}/${label}-drawer-375.png` });
+  await page.click('.nav-drawer-next');
+  await page.waitForTimeout(300);
+  c.drawerLevel2 = await page.$eval('#nav-drawer', (d) => `${d.classList.contains('is-level-2')} ${d.querySelector('.nav-drawer-back-label').textContent} ${!!d.querySelector('.nav-drawer-sub:not([hidden]) .nav-menu-card')}`);
+  await page.screenshot({ path: `${outDir}/${label}-drawer-l2-375.png` });
+  await page.click('.nav-drawer-back');
+  c.drawerBack = await page.$eval('#nav-drawer', (d) => !d.classList.contains('is-level-2') && !d.querySelector('.nav-drawer-main').hidden);
+  await page.click('.nav-drawer-close');
+  c.drawerClosed = await page.$eval('#nav-drawer', (d) => d.hidden);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.waitForTimeout(300);
+  await page.click('.nav-hamburger');
+  c.burger1280 = await page.$eval('#nav-drawer', (d) => `${!d.hidden} overflow visible ${[...d.querySelectorAll('.is-overflow')].filter((e) => e.offsetHeight > 0).length}`);
   await page.close();
   return out;
 }
