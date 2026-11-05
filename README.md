@@ -1,34 +1,30 @@
-# Your Project's Title...
-Your project's description...
+# Intact personal insurance — da.live site
+
+The Intact personal insurance page (implemented from the client Figma on the xwalk site
+[eds-intact](https://github.com/azouaoui-deloitte/eds-intact)) published with Edge Delivery and
+Document Authoring (`azouaoui-deloitte/eds-intact-da`). Blocks, styles, tokens and icons are shared with
+eds-intact; header and footer are built from the `/nav` and `/footer` documents with the same DOM as the
+AEM header / footer components.
+
+Documents: `/en/personal-insurance`, `/nav`, `/footer`, sheets `/metadata.json` (nav / footer for `/**`)
+and `/redirects.json` (`/` -> `/en/personal-insurance`). Edit: https://da.live/#/azouaoui-deloitte/eds-intact-da
+
+Intact brand fonts are licensed and not versioned: pages use the sized Arial / Georgia fallbacks.
 
 ## Environments
-- Preview: https://main--eds-intact-da--azouaoui-deloitte.aem.page/
-- Live: https://main--eds-intact-da--azouaoui-deloitte.aem.live/
+- Preview: https://main--eds-intact-da--azouaoui-deloitte.aem.page/en/personal-insurance
+- Live: https://main--eds-intact-da--azouaoui-deloitte.aem.live/en/personal-insurance
 
-## Documentation
+## Content
+`import-work/tools/build-da.mjs [--fetch]` builds `import-work/da/` from the AEM render
+(`https://localhost:8444/content/intact/en/personal-insurance.plain.html`, snapshot in `import-work/source/`)
+and the DAM images; `import-work/tools/da-upload.sh [upload|preview|publish|all]` uploads to da.live
+(token `~/.aem/da-token.json`, `da-auth-helper login`) and previews / publishes.
 
-Before using the aem-boilerplate, we recommend you to go through the documentation on https://www.aem.live/docs/ and more specifically:
-1. [Developer Tutorial](https://www.aem.live/developer/tutorial)
-2. [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
-3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
-4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
-
-## Installation
+## Development
 
 ```sh
 npm i
-```
-
-## Linting
-
-```sh
 npm run lint
+aem up
 ```
-
-## Local development
-
-1. Create a new repository based on the `aem-boilerplate` template
-1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
-1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
-1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
-1. Open the `eds-intact-da` directory in your favorite IDE and start coding :)
