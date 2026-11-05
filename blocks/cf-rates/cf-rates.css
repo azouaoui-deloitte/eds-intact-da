@@ -1,0 +1,191 @@
+/* mortgage rates from a Content Fragment: Intact cards on sand, serif rates */
+.cf-rates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+  color: var(--color-rich-black);
+}
+
+.cf-rates .cf-rates-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+}
+
+.cf-rates .cf-rates-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-12);
+}
+
+.cf-rates .cf-rates-tag {
+  padding: var(--size-4) var(--size-8);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-pink-light);
+  color: var(--color-black);
+  font-size: var(--type-tag-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-tag-line-height);
+  letter-spacing: var(--type-tag-letter-spacing);
+  text-transform: uppercase;
+}
+
+.cf-rates.is-fallback .cf-rates-tag,
+.cf-rates.is-error .cf-rates-tag {
+  background-color: var(--color-brand-red);
+  color: var(--color-white);
+}
+
+/* title / date / disclaimer keep their line boxes while loading: no layout shift */
+.cf-rates .cf-rates-title {
+  min-height: var(--type-section-line-height);
+}
+
+.cf-rates .cf-rates-date {
+  min-height: var(--type-body-line-height);
+  color: var(--color-neutral-700);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
+}
+
+.cf-rates .cf-rates-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--size-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cf-rates .cf-rates-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  border-radius: var(--radius-md);
+  padding: var(--size-24);
+  background-color: var(--color-white);
+}
+
+.cf-rates .cf-rates-term {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--size-8);
+  font-size: var(--type-label-lg-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-label-lg-line-height);
+}
+
+.cf-rates .cf-rates-term-type {
+  color: var(--color-neutral-700);
+  font-size: var(--type-small-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--type-small-line-height);
+}
+
+.cf-rates .variable .cf-rates-term-type {
+  color: var(--color-teal);
+}
+
+.cf-rates .cf-rates-rate {
+  min-height: var(--type-display-line-height);
+  font-family: var(--font-heading);
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+}
+
+.cf-rates .cf-rates-apr {
+  min-height: var(--type-small-line-height);
+  color: var(--color-neutral-700);
+  font-size: var(--type-small-size);
+  line-height: var(--type-small-line-height);
+}
+
+.cf-rates .cf-rates-disclaimer {
+  min-height: calc(3 * var(--type-caption-line-height));
+  color: var(--color-neutral-700);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+  white-space: pre-line;
+}
+
+.cf-rates .cf-rates-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-16);
+  border-top: var(--border-xs) solid var(--divider-color);
+  padding-top: var(--size-16);
+}
+
+.cf-rates .cf-rates-status-text {
+  flex: 1 1 280px;
+  font-size: var(--type-small-size);
+  line-height: var(--type-small-line-height);
+  overflow-wrap: anywhere;
+}
+
+.cf-rates.is-fallback .cf-rates-status,
+.cf-rates.is-error .cf-rates-status {
+  border: var(--border-sm) solid var(--color-brand-red);
+  border-radius: var(--radius-button);
+  padding: var(--size-16);
+  background-color: var(--color-white);
+}
+
+/* loading skeleton */
+.cf-rates.is-loading .cf-rates-title,
+.cf-rates.is-loading .cf-rates-date,
+.cf-rates.is-loading .cf-rates-rate,
+.cf-rates.is-loading .cf-rates-apr {
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg, var(--color-sand-150) 25%, var(--color-sand-300) 50%, var(--color-sand-150) 75%) 0 0 / 200% 100%;
+  animation: cf-rates-shimmer 1.2s linear infinite;
+}
+
+.cf-rates.is-loading .cf-rates-title {
+  width: min(520px, 90%);
+}
+
+.cf-rates.is-loading .cf-rates-date {
+  width: 200px;
+}
+
+.cf-rates.is-loading .cf-rates-rate {
+  width: 60%;
+}
+
+.cf-rates.is-loading .cf-rates-apr {
+  width: 40%;
+}
+
+@keyframes cf-rates-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf-rates.is-loading .cf-rates-title,
+  .cf-rates.is-loading .cf-rates-date,
+  .cf-rates.is-loading .cf-rates-rate,
+  .cf-rates.is-loading .cf-rates-apr {
+    animation: none;
+  }
+}
+
+@media (width >= 744px) {
+  .cf-rates .cf-rates-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 1024px) {
+  .cf-rates .cf-rates-list {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--size-24);
+  }
+}

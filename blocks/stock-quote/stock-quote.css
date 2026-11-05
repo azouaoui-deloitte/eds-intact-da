@@ -1,0 +1,198 @@
+/* stock quote card: Intact card surface (white, 16 px radius), heading serif, body sans */
+.stock-quote {
+  --stock-quote-up: var(--color-teal);
+  --stock-quote-down: var(--color-brand-red-dark);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+  box-sizing: border-box;
+  max-width: 720px;
+  margin: 0 auto;
+  border: var(--border-xs) solid var(--color-border-neutral-light);
+  border-radius: var(--radius-md);
+  padding: var(--size-24) var(--size-16);
+  background-color: var(--color-white);
+  color: var(--color-rich-black);
+}
+
+.stock-quote .stock-quote-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-12);
+}
+
+.stock-quote .stock-quote-tag {
+  padding: var(--size-4) var(--size-8);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-pink-light);
+  color: var(--color-black);
+  font-size: var(--type-tag-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-tag-line-height);
+  letter-spacing: var(--type-tag-letter-spacing);
+  text-transform: uppercase;
+}
+
+.stock-quote .stock-quote-title {
+  font-size: var(--type-heading-l-size);
+  line-height: var(--type-heading-l-line-height);
+  letter-spacing: 0;
+}
+
+/* every line keeps its height in all states: no layout shift between loading, data and error */
+.stock-quote .stock-quote-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+}
+
+.stock-quote .stock-quote-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--size-8);
+  min-height: var(--type-display-line-height);
+  font-family: var(--font-heading);
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+}
+
+.stock-quote .stock-quote-currency {
+  color: var(--color-neutral-700);
+  font-family: var(--font-body);
+  font-size: var(--type-label-lg-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-label-lg-line-height);
+  letter-spacing: 0;
+}
+
+.stock-quote .stock-quote-change {
+  align-self: flex-start;
+  min-height: var(--type-label-lg-line-height);
+  border-radius: var(--radius-pill);
+  padding: var(--size-4) var(--size-12);
+  font-size: var(--type-label-lg-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-label-lg-line-height);
+}
+
+.stock-quote .stock-quote-change.up {
+  background-color: color-mix(in srgb, var(--stock-quote-up) 10%, transparent);
+  color: var(--stock-quote-up);
+}
+
+.stock-quote .stock-quote-change.down {
+  background-color: color-mix(in srgb, var(--stock-quote-down) 10%, transparent);
+  color: var(--stock-quote-down);
+}
+
+.stock-quote .stock-quote-change.flat {
+  background-color: var(--color-sand);
+}
+
+.stock-quote .stock-quote-change.up::before {
+  content: '▲ ';
+}
+
+.stock-quote .stock-quote-change.down::before {
+  content: '▼ ';
+}
+
+.stock-quote .stock-quote-meta,
+.stock-quote .stock-quote-extended {
+  min-height: var(--type-small-line-height);
+  color: var(--color-neutral-700);
+  font-size: var(--type-small-size);
+  line-height: var(--type-small-line-height);
+}
+
+.stock-quote .stock-quote-extended[hidden] {
+  display: block;
+  visibility: hidden;
+}
+
+.stock-quote .stock-quote-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--size-16);
+  background-color: var(--color-white);
+}
+
+.stock-quote .stock-quote-error[hidden] {
+  display: none;
+}
+
+.stock-quote .stock-quote-error-text {
+  font-family: var(--font-heading);
+  font-size: var(--type-heading-l-size);
+  line-height: var(--type-heading-l-line-height);
+}
+
+.stock-quote .stock-quote-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-16);
+  border-top: var(--border-xs) solid var(--color-border-neutral-light);
+  padding-top: var(--size-16);
+}
+
+.stock-quote .stock-quote-note {
+  flex: 1 1 240px;
+  color: var(--color-neutral-700);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line-height);
+}
+
+/* loading skeleton (first load), dimmed values while refreshing */
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-price,
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-change,
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-meta {
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg, var(--color-sand) 25%, var(--color-sand-150) 50%, var(--color-sand) 75%) 0 0 / 200% 100%;
+  animation: stock-quote-shimmer 1.2s linear infinite;
+}
+
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-price {
+  width: min(280px, 70%);
+}
+
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-change {
+  width: 160px;
+}
+
+.stock-quote.is-loading:not([data-quote-source]) .stock-quote-meta {
+  width: min(420px, 90%);
+}
+
+.stock-quote.is-loading[data-quote-source] .stock-quote-body {
+  opacity: 0.5;
+}
+
+@keyframes stock-quote-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stock-quote.is-loading:not([data-quote-source]) .stock-quote-price,
+  .stock-quote.is-loading:not([data-quote-source]) .stock-quote-change,
+  .stock-quote.is-loading:not([data-quote-source]) .stock-quote-meta {
+    animation: none;
+  }
+}
+
+@media (width >= 744px) {
+  .stock-quote {
+    padding: var(--size-32) var(--size-40);
+  }
+}
