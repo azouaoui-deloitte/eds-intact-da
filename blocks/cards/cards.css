@@ -126,3 +126,19 @@ main > .section.cards-container > div + div {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* PROVISIONAL (no Figma state): hovering or focusing a card zooms its image */
+.cards.overlay .cards-card-image img {
+  transition: transform var(--transition-reveal);
+}
+
+.cards.overlay > ul > li:hover .cards-card-image img,
+.cards.overlay > ul > li:focus-within .cards-card-image img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cards.overlay .cards-card-image img {
+    transition: none;
+  }
+}

@@ -212,8 +212,10 @@ button.button {
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color var(--transition-state), border-color var(--transition-state), color var(--transition-state);
 }
 
+/* i-button Focus: radius 6, 2 px ring 2 px away, in the colour of the type */
 a.button:focus-visible,
 button.button:focus-visible {
   border-radius: calc(var(--radius-button) - var(--border-sm));
@@ -225,6 +227,11 @@ a.button.primary,
 button.button.primary {
   background-color: var(--color-brand-red);
   color: var(--color-white);
+}
+
+a.button.primary:focus-visible,
+button.button.primary:focus-visible {
+  outline-color: var(--color-brand-red);
 }
 
 a.button.primary:hover,
@@ -253,6 +260,7 @@ button.button.tertiary:hover {
   background-color: var(--color-tertiary-hover);
 }
 
+/* i-button Disabled */
 a.button[aria-disabled="true"],
 button.button:disabled {
   border-color: transparent;
@@ -290,9 +298,28 @@ button.button.secondary:disabled {
   background-color: var(--color-tertiary-reversed-hover);
 }
 
-.reversed a.button:focus-visible,
-.reversed button.button:focus-visible {
+.reversed a.button:not(.primary):focus-visible,
+.reversed button.button:not(.primary):focus-visible {
   outline-color: var(--color-white);
+}
+
+.reversed a.button.secondary[aria-disabled="true"],
+.reversed button.button.secondary:disabled {
+  border-color: var(--color-disabled-text);
+  color: var(--color-disabled-text);
+}
+
+.reversed a.button.tertiary[aria-disabled="true"],
+.reversed button.button.tertiary:disabled {
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.button:any-link,
+  button.button {
+    transition: none;
+  }
 }
 
 /* sections */

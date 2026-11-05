@@ -29,7 +29,9 @@
   --color-border-neutral-light: #d8d8d8; /* border/default/neutral-light */
   --color-overlay: #333; /* hero image overlay (neutral/800) */
   --color-primary-hover: #9e0a26; /* i-button Primary Hover */
-  --color-secondary-hover: #94712a1a; /* i-button Secondary Hover */
+  --color-secondary-hover: #94712a1a; /* i-button Secondary Hover, i-text-button Hover pill */
+  --transition-state: 0.25s ease; /* hover / focus colour changes (prod intact.ca: 0.25s; Figma: instant) */
+  --transition-reveal: 0.51s cubic-bezier(0.25, 1, 0.5, 1); /* product row hover, Figma Smart animate Gentle 511 ms */
   --color-tertiary-hover: #333; /* i-button Tertiary Hover */
   --color-tertiary-reversed-hover: #ede6df; /* i-button Tertiary-reversed Hover */
   --color-disabled-bg: #d8d8d8; /* i-button Disabled */
@@ -51,8 +53,11 @@
   --type-section-size: 32px; /* H2 section: 56/56 at 1440 (hard-coded), 32/36 at 320 (Contact us v2) */
   --type-section-line-height: 36px;
   --type-section-letter-spacing: -0.56px;
-  --type-product-size: 32px; /* product row title, hard-coded 56/56 in Figma; mobile assumed */
-  --type-product-line-height: 36px;
+  --type-product-size: 24px; /* i-products row title: mobile 24/28 (instance override of the 32/36 set), desktop 48/52 */
+  --type-product-line-height: 28px;
+  --type-product-letter-spacing: 0;
+  --type-product-heading-size: 20px; /* i-products heading 20/24 bold */
+  --type-product-heading-line-height: 24px;
   --type-heading-l-size: 32px; /* side by side Thirds: 48/52 at 1440 (mobile assumed) */
   --type-heading-l-line-height: 36px;
   --type-label-lg-size: 18px; /* functional/button-label-lg */
@@ -68,8 +73,8 @@
   --type-question-line-height: 18px;
   --type-nav-size: 14px; /* main nav links */
   --type-nav-line-height: 20px;
-  --type-small-size: 14px; /* product description 14/18.2 */
-  --type-small-line-height: 18.2px;
+  --type-small-size: 14px; /* product description 14/20 (i-products hover / mobile) */
+  --type-small-line-height: 20px;
   --type-caption-size: 12px; /* paragraph/p5 */
   --type-caption-line-height: 18px;
   --type-tag-size: 11px; /* tag 11/11, letter-spacing 0.66 */
@@ -123,10 +128,16 @@
   --marquee-gap: 25px;
   --marquee-radius: 6.66px;
   --banner-min-height: 704px; /* S09 */
-  --product-row-height: 112px; /* product list v2 */
-  --product-pictogram-width: 181px;
-  --product-pictogram-height: 64px;
+  --product-section-padding: 56px; /* i-products Property 1=mobile 56 / desktop 80 / 1920 instance 96 */
+  --product-list-gap: 32px; /* heading to rows: mobile 32 / desktop 48 */
+  --product-content-width: 100%; /* desktop 1036 at 1440, 1172 at 1920 */
+  --product-row-height: 112px; /* .intact-products-desktop */
+  --product-pictogram-size: 40px; /* .intact-products-mobile left img */
+  --product-illustration-width: 181px; /* desktop illustration column */
+  --product-illustration-height: 64px;
   --product-description-width: 181px;
+  --product-description-height: 54px; /* desktop description frame, text top-aligned */
+  --product-chevron-size: 12px;
   --divider-color: #14141426; /* product list dividers */
   --divider-color-faq: #1414141a; /* FAQ dividers */
   --hero-min-height: 700px; /* i-hero */
@@ -146,10 +157,13 @@
   --nav-topbar-height: 32px;
   --nav-main-height: 64px;
   --nav-height: 96px;
+  --nav-menu-column-width: 324px; /* Nav items (desktop menu selection) */
+  --nav-drawer-close-inset: 8px; /* mobile lvl 1 top bar right padding (tablet 24) */
 }
 
 @media (width >= 744px) {
   :root {
+    --nav-drawer-close-inset: 24px;
     --type-display-size: 48px; /* Hero Style=Half (Tablet and Mobile only), 744 */
     --type-display-line-height: 52px;
     --page-padding-x: 40px;
@@ -175,8 +189,12 @@
     --type-display-line-height: 68px;
     --type-section-size: 56px;
     --type-section-line-height: 56px;
-    --type-product-size: 56px;
-    --type-product-line-height: 56px;
+    --type-product-size: 48px;
+    --type-product-line-height: 52px;
+    --type-product-letter-spacing: -1px;
+    --product-section-padding: 80px;
+    --product-list-gap: 48px;
+    --product-content-width: 1036px;
     --device-width: 1024px;
   }
 }
@@ -188,5 +206,15 @@
     --sbs-gutter: 120px;
     --sbs-thirds-gutter: 72px;
     --device-width: 1440px;
+  }
+}
+
+/* 1920 mode: page padding of the Figma 1920 frames (i-nav, desktop menu selection, search) */
+@media (width >= 1920px) {
+  :root {
+    --page-padding-x: 252px;
+    --product-section-padding: 96px;
+    --product-content-width: 1172px;
+    --device-width: 1920px;
   }
 }

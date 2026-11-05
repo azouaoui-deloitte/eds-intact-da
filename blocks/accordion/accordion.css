@@ -30,10 +30,38 @@
   height: var(--icon-size);
   background-color: var(--color-neutral-800);
   mask: url('../../icons/add.svg') center / contain no-repeat;
+  transition: transform var(--transition-state);
 }
 
+/* PROVISIONAL (FAQ has no open state in Figma): items open independently, + turns into - */
 .accordion .accordion-item[open] > .accordion-item-label::after {
   mask-image: url('../../icons/minus.svg');
+  transform: rotate(180deg);
+}
+
+.accordion .accordion-item-label:focus-visible {
+  border-radius: var(--radius-xs);
+}
+
+.accordion {
+  interpolate-size: allow-keywords;
+}
+
+.accordion .accordion-item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size var(--transition-reveal), content-visibility var(--transition-reveal) allow-discrete;
+}
+
+.accordion .accordion-item[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion .accordion-item-label::after,
+  .accordion .accordion-item::details-content {
+    transition: none;
+  }
 }
 
 .accordion .accordion-item-label:hover > span {

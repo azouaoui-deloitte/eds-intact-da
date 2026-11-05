@@ -110,20 +110,55 @@
   gap: var(--v-spacing-xs);
 }
 
-/* b-text-button Reversed */
+/* i-text-button Reversed: Hover = 20 % white pill 32 px high, 8 px wider than the label on each
+   side, radius 8, no underline; Focus = pill radius 6 + 2 px white ring 2 px outside it */
 .footer-inner .footer-link {
+  position: relative;
+  isolation: isolate;
   display: block;
   padding-block: var(--size-4);
-  border-radius: var(--radius-xs);
   font-size: var(--type-label-md-size);
   font-weight: var(--font-weight-bold);
   line-height: var(--type-label-md-line-height);
   text-decoration: none;
 }
 
-.footer-inner .footer-link:hover {
-  text-decoration: underline;
-  text-underline-offset: var(--size-4);
+.footer-inner .footer-link::before {
+  content: "";
+  position: absolute;
+  inset: calc((2 * var(--size-4) + var(--type-label-md-line-height) - var(--size-32)) / 2) calc(-1 * var(--size-8));
+  z-index: -1;
+  border-radius: var(--radius-button);
+  background-color: transparent;
+  transition: background-color var(--transition-state);
+}
+
+.footer-inner .footer-link:hover::before,
+.footer-inner .footer-link:focus-visible::before {
+  background-color: var(--color-link-reversed-hover);
+}
+
+.footer-inner .footer-link:focus-visible {
+  outline: none;
+}
+
+.footer-inner .footer-link:focus-visible::before {
+  border-radius: calc(var(--radius-button) - var(--border-sm));
+}
+
+.footer-inner .footer-link:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: calc((2 * var(--size-4) + var(--type-label-md-line-height) - var(--size-32)) / 2 - 2 * var(--border-sm)) calc(-1 * (var(--size-8) + 2 * var(--border-sm)));
+  border: var(--border-sm) solid var(--color-white);
+  border-radius: calc(var(--radius-button) + var(--border-sm));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-inner .footer-link::before {
+    transition: none;
+  }
 }
 
 .footer-inner .footer-social,

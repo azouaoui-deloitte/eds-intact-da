@@ -5,6 +5,7 @@
  */
 
 const isDesktop = window.matchMedia('(width >= 1024px)');
+const isWide = window.matchMedia('(width >= 1440px)');
 
 /** i-nav State=Scrolled once the page is scrolled: top bar slides out, translucent main bar */
 function initScroll(nav) {
@@ -22,13 +23,16 @@ function initScroll(nav) {
   update();
 }
 
+const isOpen = (button) => button.getAttribute('aria-expanded') === 'true';
+
 /**
  * Disclosure (button + panel): toggles aria-expanded / hidden, closes on Escape and outside click.
  * @returns {(open: boolean, focus?: boolean) => void} setter
  */
-function disclosure(nav, button, panel, { onToggle, focusTarget } = {}) {
+function disclosure(nav, button, panel, { onToggle, focusTarget, group } = {}) {
   const setOpen = (open, focus = true) => {
-    if ((button.getAttribute('aria-expanded') === 'true') === open) return;
+    if (isOpen(button) === open) return;
+    if (open) group?.forEach((close) => close !== setOpen && close(false, false));
     button.setAttribute('aria-expanded', open ? 'true' : 'false');
     panel.hidden = !open;
     if (button.dataset.labelOpen && button.dataset.labelClose) {
@@ -36,40 +40,101 @@ function disclosure(nav, button, panel, { onToggle, focusTarget } = {}) {
     }
     onToggle?.(open);
     if (!focus) return;
-    if (open) (focusTarget?.() || panel.querySelector('a[href], button, input'))?.focus();
+    const first = () => panel.querySelector('a[href], button:not([hidden]), input');
+    if (open) (focusTarget?.() || first())?.focus();
     else button.focus();
   };
-  button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+  group?.push(setOpen);
+  button.addEventListener('click', () => setOpen(!isOpen(button)));
   nav.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+    if (e.key === 'Escape' && isOpen(button)) {
       e.stopPropagation();
       setOpen(false);
     }
   });
   document.addEventListener('click', (e) => {
-    if (button.getAttribute('aria-expanded') === 'true' && !button.contains(e.target) && !panel.contains(e.target)) {
-      setOpen(false, false);
-    }
+    const outside = !button.contains(e.target) && !panel.contains(e.target);
+    if (isOpen(button) && outside) setOpen(false, false);
   });
   return setOpen;
 }
 
-function initSearch(nav) {
-  const button = nav.querySelector('.nav-search-toggle');
-  const panel = nav.querySelector('#nav-search');
-  if (!button || !panel) return;
-  const setOpen = disclosure(nav, button, panel, { focusTarget: () => panel.querySelector('input') });
-  isDesktop.addEventListener('change', () => { if (!isDesktop.matches) setOpen(false, false); });
+/** Desktop panels under the main bar: one mega menu (desktop menu selection) or the search */
+function initPanels(nav) {
+  const group = [];
+  nav.querySelectorAll('.nav-menu-toggle').forEach((button) => {
+    const panel = nav.querySelector(`#${button.getAttribute('aria-controls')}`);
+    if (!panel) return;
+    const setOpen = disclosure(nav, button, panel, { group });
+    isDesktop.addEventListener('change', () => { if (!isDesktop.matches) setOpen(false, false); });
+  });
+  const search = nav.querySelector('.nav-search-toggle');
+  const searchPanel = nav.querySelector('#nav-search');
+  if (search && searchPanel) {
+    const setOpen = disclosure(nav, search, searchPanel, {
+      group, focusTarget: () => searchPanel.querySelector('input'),
+    });
+    isDesktop.addEventListener('change', () => { if (!isDesktop.matches) setOpen(false, false); });
+  }
 }
 
+/**
+ * Menu (hamburger): full-screen mobile / tablet lvl 1 and lvl 2 below 1024 px, desktop burger panel
+ * from 1024 to 1439 px; nothing to open from 1440 px.
+ */
 function initDrawer(nav) {
   const button = nav.querySelector('.nav-hamburger');
   const drawer = nav.querySelector('#nav-drawer');
   if (!button || !drawer) return;
+  const main = drawer.querySelector('.nav-drawer-main');
+  const back = drawer.querySelector('.nav-drawer-back');
+  const backLabel = drawer.querySelector('.nav-drawer-back-label');
+  const segments = drawer.querySelector('.nav-drawer-segments');
+  let current = null;
+
+  const showLevel = (next, focus = true) => {
+    if (current) {
+      current.setAttribute('aria-expanded', 'false');
+      drawer.querySelector(`#${current.getAttribute('aria-controls')}`).hidden = true;
+    }
+    const opener = current;
+    current = next;
+    const sub = next && drawer.querySelector(`#${next.getAttribute('aria-controls')}`);
+    if (sub) {
+      next.setAttribute('aria-expanded', 'true');
+      sub.hidden = false;
+      backLabel.textContent = next.dataset.label;
+    }
+    main.hidden = !!sub;
+    back.hidden = !sub;
+    if (segments) segments.hidden = !!sub;
+    drawer.classList.toggle('is-level-2', !!sub);
+    if (!focus) return;
+    if (sub) back.focus();
+    else opener?.focus();
+  };
+
   const setOpen = disclosure(nav, button, drawer, {
-    onToggle: (open) => document.body.classList.toggle('nav-drawer-open', open),
+    onToggle: (open) => {
+      document.body.classList.toggle('nav-drawer-open', open && !isDesktop.matches);
+      if (!open) showLevel(null, false);
+    },
+    focusTarget: () => drawer.querySelector(isDesktop.matches ? 'input' : '.nav-drawer-close'),
   });
-  isDesktop.addEventListener('change', () => { if (isDesktop.matches) setOpen(false, false); });
+  drawer.querySelector('.nav-drawer-close')?.addEventListener('click', () => setOpen(false));
+  drawer.querySelectorAll('.nav-drawer-next').forEach((next) => {
+    next.addEventListener('click', () => showLevel(next));
+  });
+  back.addEventListener('click', () => showLevel(null));
+
+  const segmentToggle = drawer.querySelector('.nav-drawer-segment-toggle');
+  const segmentList = drawer.querySelector('#nav-drawer-segment-list');
+  if (segmentToggle && segmentList) disclosure(drawer, segmentToggle, segmentList);
+
+  isDesktop.addEventListener('change', () => {
+    document.body.classList.toggle('nav-drawer-open', isOpen(button) && !isDesktop.matches);
+  });
+  isWide.addEventListener('change', () => { if (isWide.matches) setOpen(false, false); });
 }
 
 /**
@@ -80,6 +145,6 @@ export default function initHeader(nav) {
   if (!nav || nav.dataset.navInit) return;
   nav.dataset.navInit = 'true';
   initScroll(nav);
-  initSearch(nav);
+  initPanels(nav);
   initDrawer(nav);
 }
