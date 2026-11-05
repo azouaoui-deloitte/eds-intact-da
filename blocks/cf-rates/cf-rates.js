@@ -228,7 +228,9 @@ export default function decorate(block) {
     } else {
       tag.textContent = 'Demo · Fallback';
       const cause = unreachable ? `is not reachable from this browser (${reason})` : `returned no rates (${reason})`;
-      statusText.textContent = `Fallback data (static sheet): AEM (${where}) ${cause}. Only the machine running the local AEM shows the live Content Fragment.`;
+      const local = /^https?:\/\/(localhost|127\.0\.0\.1)[:/]/.test(`${where}/`);
+      const hint = unreachable && local ? ' If the browser asked to access devices on your local network, allow it and select Retry.' : '';
+      statusText.textContent = `Fallback data (static sheet): AEM (${where}) ${cause}. Only the machine running the local AEM shows the live Content Fragment.${hint}`;
     }
   }
 
