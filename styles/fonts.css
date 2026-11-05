@@ -1,10 +1,10 @@
-/* Intact brand faces: licensed files are not versioned (fonts/intact-* is git-ignored) */
+/* Intact brand faces: licensed, not published (installed faces only, else the sized fallbacks) */
 @font-face {
   font-family: 'Intact Sans';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local('Intact Sans'), local('IntactSans-Regular'), url('../fonts/intact-sans-regular.woff2') format('woff2');
+  src: local('Intact Sans'), local('IntactSans-Regular');
 }
 
 @font-face {
@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local('Intact Sans Medium'), local('IntactSans-Medium'), url('../fonts/intact-sans-medium.woff2') format('woff2');
+  src: local('Intact Sans Medium'), local('IntactSans-Medium');
 }
 
 @font-face {
@@ -20,7 +20,7 @@
   font-style: normal;
   font-weight: 600 700;
   font-display: swap;
-  src: local('Intact Sans Bold'), local('IntactSans-Bold'), url('../fonts/intact-sans-bold.woff2') format('woff2');
+  src: local('Intact Sans Bold'), local('IntactSans-Bold');
 }
 
 @font-face {
@@ -28,7 +28,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local('Intact Serif'), local('IntactSerif-Regular'), url('../fonts/intact-serif-regular.woff2') format('woff2');
+  src: local('Intact Serif'), local('IntactSerif-Regular');
 }
 
 @font-face {
@@ -36,5 +36,5 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local('Intact Serif Medium'), local('IntactSerif-Medium'), url('../fonts/intact-serif-medium.woff2') format('woff2');
+  src: local('Intact Serif Medium'), local('IntactSerif-Medium');
 }
