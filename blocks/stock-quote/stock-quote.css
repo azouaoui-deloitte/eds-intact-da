@@ -110,6 +110,11 @@
   line-height: var(--type-small-line-height);
 }
 
+/* the meta line wraps on phones */
+.stock-quote .stock-quote-meta {
+  min-height: calc(2 * var(--type-small-line-height));
+}
+
 .stock-quote .stock-quote-extended[hidden] {
   display: block;
   visibility: hidden;
@@ -194,5 +199,9 @@
 @media (width >= 744px) {
   .stock-quote {
     padding: var(--size-32) var(--size-40);
+  }
+
+  .stock-quote .stock-quote-meta {
+    min-height: var(--type-small-line-height);
   }
 }

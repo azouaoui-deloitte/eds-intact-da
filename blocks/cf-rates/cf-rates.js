@@ -74,8 +74,11 @@ async function fetchJson(url) {
   }
 }
 
+/** persisted query variables: AEM does not decode %2F in the ;name=value matrix parameters */
+const queryVar = (value) => encodeURIComponent(value).replace(/%2F/gi, '/');
+
 async function fromAem(base, path, variation) {
-  const url = `${base}/graphql/execute.json/${QUERY};path=${encodeURIComponent(path)};variation=${encodeURIComponent(variation)}?ts=${Date.now()}`;
+  const url = `${base}/graphql/execute.json/${QUERY};path=${queryVar(path)};variation=${queryVar(variation)}?ts=${Date.now()}`;
   const json = await fetchJson(url);
   if (json.errors?.length) throw new Error(json.errors[0].message);
   const item = json?.data?.mortgageRatesByPath?.item;
@@ -177,9 +180,11 @@ export default function decorate(block) {
     let data;
     let mode = 'live';
     let reason = '';
+    let unreachable = false;
     try {
       data = await fromAem(base, path, variation);
     } catch (e) {
+      unreachable = e.name === 'AbortError' || e instanceof TypeError;
       reason = e.name === 'AbortError' ? 'timeout' : e.message;
       // eslint-disable-next-line no-console
       console.warn(`cf-rates: AEM ${where} unreachable (${reason})`);
@@ -206,21 +211,24 @@ export default function decorate(block) {
       date.textContent = '';
       disclaimer.textContent = '';
       renderCards(list, {});
-      statusText.textContent = `AEM (${where}) is not reachable from this browser: ${reason}.`;
+      statusText.textContent = unreachable
+        ? `AEM (${where}) is not reachable from this browser (${reason}).`
+        : `AEM (${where}) returned no rates: ${reason}`;
       return;
     }
     title.textContent = data.title || 'Mortgage rates';
     date.textContent = data.effectiveDate ? `Effective ${formatDate(data.effectiveDate)}` : '';
     disclaimer.textContent = data.disclaimer || '';
     renderCards(list, data);
-    const time = new Intl.DateTimeFormat('en-CA', { timeStyle: 'medium' }).format(new Date());
+    const time = new Intl.DateTimeFormat('en-US', { timeStyle: 'medium' }).format(new Date());
     if (mode === 'live') {
       tag.textContent = 'Demo · Live from AEM';
       statusText.textContent = `Content Fragment ${path} (${variation}) via ${where}/graphql/execute.json/${QUERY}, loaded ${time}.`;
       if (inUniversalEditor()) instrument(content, title, disclaimer, path, variation);
     } else {
       tag.textContent = 'Demo · Fallback';
-      statusText.textContent = `Fallback data (static sheet): AEM (${where}) is not reachable from this browser (${reason}). Only the machine running the local AEM shows the live Content Fragment.`;
+      const cause = unreachable ? `is not reachable from this browser (${reason})` : `returned no rates (${reason})`;
+      statusText.textContent = `Fallback data (static sheet): AEM (${where}) ${cause}. Only the machine running the local AEM shows the live Content Fragment.`;
     }
   }
 
