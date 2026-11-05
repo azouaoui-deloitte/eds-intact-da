@@ -9,32 +9,40 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  buildBlock,
 } from './aem.js';
 
-if (window.trustedTypes && window.trustedTypes.createPolicy) {
-  const innerTT = window.trustedTypes.createPolicy('tt-inner', {
-    createHTML: (s) => s, // avoid stack overflow
+/**
+ * Moves all the attributes from a given elmenet to another given element.
+ * @param {Element} from the element to copy attributes from
+ * @param {Element} to the element to copy attributes to
+ */
+export function moveAttributes(from, to, attributes) {
+  if (!attributes) {
+    // eslint-disable-next-line no-param-reassign
+    attributes = [...from.attributes].map(({ nodeName }) => nodeName);
+  }
+  attributes.forEach((attr) => {
+    const value = from.getAttribute(attr);
+    if (value) {
+      to?.setAttribute(attr, value);
+      from.removeAttribute(attr);
+    }
   });
+}
 
-  window.trustedTypes.createPolicy('default', {
-    createHTML: (input, type, sink) => {
-      let processedInput = input;
-      if (/srcdoc\s*=/i.test(processedInput)) {
-        const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
-        doc.querySelectorAll('iframe[srcdoc]').forEach((el) => el.removeAttribute('srcdoc'));
-        processedInput = doc.body.innerHTML;
-      }
-      if (sink.includes('createContextualFragment') || sink.includes('Document write')) {
-        const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
-        doc.querySelectorAll('script').forEach((el) => el.remove());
-        processedInput = doc.body.innerHTML;
-      }
-      return processedInput;
-    },
-    createScriptURL: (input) => input,
-    createScript: (input) => input,
-  });
+/**
+ * Move instrumentation attributes from a given element to another given element.
+ * @param {Element} from the element to copy attributes from
+ * @param {Element} to the element to copy attributes to
+ */
+export function moveInstrumentation(from, to) {
+  moveAttributes(
+    from,
+    to,
+    [...from.attributes]
+      .map(({ nodeName }) => nodeName)
+      .filter((attr) => attr.startsWith('data-aue-') || attr.startsWith('data-richtext-')),
+  );
 }
 
 /**
@@ -50,53 +58,12 @@ async function loadFonts() {
 }
 
 /**
- * Turns `/widgets/...` links into widget blocks.
- * @param {Element} main The container element
- */
-function buildWidgetAutoBlocks(main) {
-  const widgetLinks = [...main.querySelectorAll('a[href*="/widgets/"]')];
-  widgetLinks.forEach((link) => {
-    if (link.closest('.widget')) return;
-    const newLink = link.cloneNode(true);
-    const widgetBlock = buildBlock('widget', { elems: [newLink] });
-    const p = link.closest('p');
-    if (
-      p
-      && p.querySelectorAll('a').length === 1
-      && p.querySelector('a') === link
-      && p.textContent.trim() === link.textContent.trim()
-    ) {
-      p.replaceWith(widgetBlock);
-    } else {
-      link.replaceWith(widgetBlock);
-    }
-  });
-}
-
-/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks(main) {
+function buildAutoBlocks() {
   try {
-    // auto load `*/fragments/*` references
-    const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
-    if (fragments.length > 0) {
-      // eslint-disable-next-line import/no-cycle
-      import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
-        fragments.forEach(async (fragment) => {
-          try {
-            const { pathname } = new URL(fragment.href);
-            const frag = await loadFragment(pathname);
-            fragment.parentElement.replaceWith(...frag.children);
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Fragment loading failed', error);
-          }
-        });
-      });
-    }
-    buildWidgetAutoBlocks(main);
+    // TODO: add auto block, if needed
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -107,7 +74,7 @@ function buildAutoBlocks(main) {
  * Decorates formatted links to style them as buttons.
  * @param {HTMLElement} main The main container element
  */
-function decorateButtons(main) {
+export function decorateButtons(main) {
   main.querySelectorAll('p a[href]').forEach((a) => {
     a.title = a.title || a.textContent;
     const p = a.closest('p');
@@ -128,8 +95,8 @@ function decorateButtons(main) {
 
     p.className = 'button-wrapper';
     a.className = 'button';
-    if (strong && em) { // high-impact call-to-action
-      a.classList.add('accent');
+    if (strong && em) { // Figma i-button Tertiary
+      a.classList.add('tertiary');
       const outer = strong.contains(em) ? strong : em;
       outer.replaceWith(a);
     } else if (strong) {
@@ -151,6 +118,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  main.querySelectorAll('.section.red, .section.dark').forEach((section) => section.classList.add('reversed'));
   decorateBlocks(main);
   decorateButtons(main);
 }
@@ -184,7 +152,7 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  loadHeader(doc.querySelector('body > header'));
+  loadHeader(doc.querySelector('header'));
 
   const main = doc.querySelector('main');
   await loadSections(main);
@@ -193,7 +161,7 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadFooter(doc.querySelector('body > footer'));
+  loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
@@ -204,7 +172,8 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  import('./consent-check.js');
+  // eslint-disable-next-line import/no-cycle
+  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }
 

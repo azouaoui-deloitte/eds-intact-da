@@ -1,36 +1,40 @@
-/* stylelint-disable max-line-length */
+/* Intact brand faces: licensed files are not versioned (fonts/intact-* is git-ignored) */
 @font-face {
-  font-family: roboto-condensed;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../fonts/roboto-condensed-bold.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: roboto;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../fonts/roboto-bold.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('../fonts/roboto-medium.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: roboto;
+  font-family: 'Intact Sans';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../fonts/roboto-regular.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: local('Intact Sans'), local('IntactSans-Regular'), url('../fonts/intact-sans-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Intact Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Intact Sans Medium'), local('IntactSans-Medium'), url('../fonts/intact-sans-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Intact Sans';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: local('Intact Sans Bold'), local('IntactSans-Bold'), url('../fonts/intact-sans-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Intact Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Intact Serif'), local('IntactSerif-Regular'), url('../fonts/intact-serif-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Intact Serif';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Intact Serif Medium'), local('IntactSerif-Medium'), url('../fonts/intact-serif-medium.woff2') format('woff2');
 }

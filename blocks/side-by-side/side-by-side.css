@@ -1,0 +1,152 @@
+main > .section.side-by-side-container {
+  padding: 0;
+}
+
+main > .section.side-by-side-container > .side-by-side-wrapper {
+  max-width: none;
+}
+
+.side-by-side {
+  --sbs-theme: transparent;
+
+  position: relative;
+  overflow: hidden;
+  padding: var(--v-spacing-xl) var(--page-padding-x);
+}
+
+.side-by-side.burgundy {
+  --sbs-theme: var(--color-burgundy);
+}
+
+.side-by-side.teal {
+  --sbs-theme: var(--color-teal);
+}
+
+.side-by-side.white {
+  --sbs-theme: var(--color-white);
+}
+
+.side-by-side.sand {
+  --sbs-theme: var(--color-sand);
+}
+
+.side-by-side.in-container:not(.burgundy, .teal, .sand) {
+  --sbs-theme: var(--color-white);
+}
+
+.side-by-side:not(.in-container) {
+  background-color: var(--sbs-theme);
+}
+
+.side-by-side.reversed {
+  color: var(--color-white);
+}
+
+.side-by-side .side-by-side-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--v-spacing-xl);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.side-by-side.in-container .side-by-side-inner {
+  box-sizing: border-box;
+  padding: var(--container-padding);
+  border-radius: var(--radius-md);
+  background-color: var(--sbs-theme);
+}
+
+.side-by-side .side-by-side-lockup > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--v-spacing-m);
+}
+
+.side-by-side h2 {
+  color: inherit;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line-height);
+  letter-spacing: var(--type-display-letter-spacing);
+}
+
+.side-by-side .button-wrapper {
+  display: flex;
+}
+
+.side-by-side.buttons-lg a.button {
+  min-height: var(--button-height-lg);
+  padding: calc(var(--size-16) - var(--border-sm));
+  font-size: var(--type-label-lg-size);
+  line-height: var(--type-label-lg-line-height);
+}
+
+.side-by-side .side-by-side-media picture,
+.side-by-side .side-by-side-media img {
+  display: block;
+  width: 100%;
+}
+
+.side-by-side:not(.bleed) .side-by-side-media img {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.side-by-side.thirds h2 {
+  font-size: var(--type-heading-l-size);
+  line-height: var(--type-heading-l-line-height);
+}
+
+.side-by-side.thirds:not(.bleed) .side-by-side-media img {
+  aspect-ratio: 3 / 2;
+}
+
+.side-by-side.image-left .side-by-side-media {
+  order: -1;
+}
+
+@media (width >= 1024px) {
+  .side-by-side .side-by-side-inner {
+    display: grid;
+    grid-template-columns: minmax(var(--sbs-half-min-width), 1fr) minmax(var(--sbs-half-min-width), 1fr);
+    align-items: center;
+    column-gap: var(--sbs-gutter);
+  }
+
+  .side-by-side .side-by-side-media {
+    aspect-ratio: 1;
+  }
+
+  .side-by-side.thirds .side-by-side-inner {
+    grid-template-columns: 3fr 7fr;
+    column-gap: var(--sbs-thirds-gutter);
+  }
+
+  .side-by-side.thirds.image-left .side-by-side-inner {
+    grid-template-columns: 7fr 3fr;
+  }
+
+  .side-by-side.thirds .side-by-side-media {
+    aspect-ratio: auto;
+  }
+
+  .side-by-side.image-left .side-by-side-media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .side-by-side.image-left .side-by-side-lockup {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* bleed: the illustration is the instance image fill (imageTransform of the Figma node, S05) */
+  .side-by-side.bleed .side-by-side-media img {
+    position: absolute;
+    left: 36.73%;
+    top: 10.77%;
+    width: 65.81%;
+    max-width: none;
+  }
+}

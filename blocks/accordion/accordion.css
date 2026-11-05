@@ -1,0 +1,59 @@
+.accordion .accordion-item {
+  border-top: var(--border-xs) solid var(--divider-color-faq);
+}
+
+.accordion .accordion-item:last-child {
+  border-bottom: var(--border-xs) solid var(--divider-color-faq);
+}
+
+.accordion .accordion-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-24);
+  padding: var(--size-24) 0;
+  color: var(--color-black);
+  font-size: var(--type-question-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-question-line-height);
+  list-style: none;
+  cursor: pointer;
+}
+
+.accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion .accordion-item-label::after {
+  content: '';
+  flex: 0 0 var(--icon-size);
+  height: var(--icon-size);
+  background-color: var(--color-neutral-800);
+  mask: url('../../icons/add.svg') center / contain no-repeat;
+}
+
+.accordion .accordion-item[open] > .accordion-item-label::after {
+  mask-image: url('../../icons/minus.svg');
+}
+
+.accordion .accordion-item-label:hover > span {
+  text-decoration: underline;
+}
+
+.accordion .accordion-item-body {
+  padding-bottom: var(--size-24);
+}
+
+.accordion .accordion-item-body ul {
+  margin-top: var(--v-spacing-s);
+  padding-left: var(--size-24);
+}
+
+.accordion .accordion-item-body > * + * {
+  margin-top: var(--v-spacing-s);
+}
+
+/* FAQ split section (Figma S06): intro (heading + CTA) left, accordion right */
+main > .section.split.accordion-container .default-content-wrapper .button-wrapper {
+  display: flex;
+}

@@ -1,0 +1,192 @@
+/*
+ * Design tokens generated from the Figma variables of "AEM Design Library (WIP)"
+ * (file 9fjQuwNsndVcp5Lv5i8NGB, frame Homepage 40004993:39823), see docs/migration/figma-inventory.md.
+ * Global-Responsive modes: 320 (base), 744, 1024, 1440, 1920. Values marked "assumed" are not
+ * observable in any Figma frame (only the 1440 page frame exists) and must be confirmed by the designer.
+ */
+:root {
+  /* colours */
+  --color-brand-red: #df0030; /* Primary/Intact Red */
+  --color-brand-red-dark: #9b0723; /* Dark Red */
+  --color-rich-black: #141414; /* Primary/Rich Black */
+  --color-charcoal: #212121; /* Keep It Intact/Black Charcoal */
+  --color-surface-dark: #1a1a1a; /* surface/dark */
+  --color-neutral-800: #333; /* neutral/800 */
+  --color-neutral-700: #4f4f4f; /* neutral/700 */
+  --color-sand: #f7f2ea; /* Primary/Sand */
+  --color-sand-150: #e6dad2; /* intact-nb/sand/150 */
+  --color-sand-300: #d6c5b9; /* intact-nb/sand/300 */
+  --color-burgundy: #4a1717; /* surface/alternate/dark-2 */
+  --color-teal: #066c63; /* surface/alternate/dark-1 */
+  --color-teal-darker: #004844; /* Darker Flashy Teal */
+  --color-red-800: #4f1c17; /* intact-nb/red/800 */
+  --color-pink-light: #ffebfe; /* Keep It Intact/Pink light 1 */
+  --color-white: #fff; /* Neutral/White */
+  --color-black: #000; /* Neutral/Black */
+  --color-text-on-dark-secondary: #ffffffe5; /* text/secondary (reversed) */
+  --color-link-reversed-hover: #fff3; /* action/text-link/reversed-hover */
+  --color-border-grey: #565656; /* border/default/grey */
+  --color-border-neutral-light: #d8d8d8; /* border/default/neutral-light */
+  --color-overlay: #333; /* hero image overlay (neutral/800) */
+  --color-primary-hover: #9e0a26; /* i-button Primary Hover */
+  --color-secondary-hover: #94712a1a; /* i-button Secondary Hover */
+  --color-tertiary-hover: #333; /* i-button Tertiary Hover */
+  --color-tertiary-reversed-hover: #ede6df; /* i-button Tertiary-reversed Hover */
+  --color-disabled-bg: #d8d8d8; /* i-button Disabled */
+  --color-disabled-text: #757575;
+  --color-tag-border-default: #1a1a1a26; /* i-tag Color=Default stroke */
+
+  /* font families */
+  --font-heading: 'Intact Serif', 'Intact Serif Fallback', georgia, serif; /* font/heading-style/family */
+  --font-body: 'Intact Sans', 'Intact Sans Fallback', arial, sans-serif; /* font/paragraph-style/family */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* type scale (base = 320 mode) */
+  --type-display-size: 36px; /* display / H1: 64 at 1440, 36 at 320 */
+  --type-display-line-height: 40px;
+  --type-display-letter-spacing: -1px;
+  --type-section-size: 32px; /* H2 section: 56/56 at 1440 (hard-coded), 32/36 at 320 (Contact us v2) */
+  --type-section-line-height: 36px;
+  --type-section-letter-spacing: -0.56px;
+  --type-product-size: 32px; /* product row title, hard-coded 56/56 in Figma; mobile assumed */
+  --type-product-line-height: 36px;
+  --type-heading-l-size: 32px; /* side by side Thirds: 48/52 at 1440 (mobile assumed) */
+  --type-heading-l-line-height: 36px;
+  --type-label-lg-size: 18px; /* functional/button-label-lg */
+  --type-label-lg-line-height: 24px;
+  --type-label-md-size: 16px; /* functional/button-label-md */
+  --type-label-md-line-height: 20px;
+  --type-body-size: 16px; /* paragraph/p3 */
+  --type-body-line-height: 22px;
+  --type-body-loose-line-height: 24px; /* www.intact.ca/Intact Sans/Medium 16/24 */
+  --type-card-size: 18px; /* card copy 18/21.6 */
+  --type-card-line-height: 21.6px;
+  --type-question-size: 18px; /* FAQ question 18/18 */
+  --type-question-line-height: 18px;
+  --type-nav-size: 14px; /* main nav links */
+  --type-nav-line-height: 20px;
+  --type-small-size: 14px; /* product description 14/18.2 */
+  --type-small-line-height: 18.2px;
+  --type-caption-size: 12px; /* paragraph/p5 */
+  --type-caption-line-height: 18px;
+  --type-tag-size: 11px; /* tag 11/11, letter-spacing 0.66 */
+  --type-tag-line-height: 11px;
+  --type-tag-letter-spacing: 0.66px;
+
+  /* size scale (var(--size-N)) */
+  --size-0: 0;
+  --size-4: 4px;
+  --size-8: 8px;
+  --size-12: 12px;
+  --size-16: 16px;
+  --size-20: 20px;
+  --size-24: 24px;
+  --size-32: 32px;
+  --size-40: 40px;
+  --size-48: 48px;
+  --size-56: 56px;
+  --size-64: 64px;
+
+  /* responsive spacing (Global-Responsive, base = 320) */
+  --page-padding-x: 16px; /* Global-Responsive/horizontal_padding 16 / 40 / 64 / 96 */
+  --container-padding: 16px; /* i-sbs-container-padding 16 / 40 / 48 / 48 */
+  --v-spacing-xl: 48px; /* i-v-spacing-xl 48 / 48 / 56 / 64 */
+  --v-spacing-m: 16px; /* i-v-spacing-m 16 / 16 (assumed) / 24 (assumed) / 24 */
+  --v-spacing-s: 8px; /* i-v-spacing-s 8 / 8 / 16 / 16 */
+  --v-spacing-xs: 4px; /* i-v-spacing-xs 4 / 4 / 8 / 8 */
+  --sbs-gutter: 32px; /* i-sbs-gutter 120 at 1440; stacked below 1024 (assumed) */
+  --sbs-half-min-width: 328px; /* i-sbs-half-minimum-width */
+  --sbs-thirds-gutter: 32px; /* Type=Thirds gap 72 at 1440 */
+  --header-gutter: 40px; /* i-header-gutter */
+  --header-button-padding: 12px; /* i-header-button-padding 12 (mobile nav) / 16 */
+  --content-max-width: 1248px; /* 1440 - 2 x 96 */
+  --device-width: 320px; /* Global-Responsive/device-width */
+
+  /* radius, borders */
+  --radius-xs: 4px; /* card image corners */
+  --radius-button: 8px; /* action/button/button-radius */
+  --radius-md: 16px; /* scale/border radius/md, i-footer-radius */
+  --radius-pill: 20px; /* tag */
+  --border-xs: 1px; /* scale/border width/xs (1) */
+  --border-sm: 2px; /* scale/border width/sm (2) */
+
+  /* values hard-coded in the hand-built Figma sections (S03, S04, S06, S08, S09) */
+  --section-content-max-width: 1240px; /* 100 px side padding at 1440 instead of the 96 px variable */
+  --card-height: 529px; /* S04 card */
+  --card-cta-height: 48px; /* S04 / S09 white CTA */
+  --card-cta-padding: 12px 16px;
+  --marquee-item-width: 354px; /* S08 strip */
+  --marquee-item-height: 339px;
+  --marquee-gap: 25px;
+  --marquee-radius: 6.66px;
+  --banner-min-height: 704px; /* S09 */
+  --product-row-height: 112px; /* product list v2 */
+  --product-pictogram-width: 181px;
+  --product-pictogram-height: 64px;
+  --product-description-width: 181px;
+  --divider-color: #14141426; /* product list dividers */
+  --divider-color-faq: #1414141a; /* FAQ dividers */
+  --hero-min-height: 700px; /* i-hero */
+  --hero-lockup-width: 718px;
+  --hero-lockup-center-width: 1024px; /* .intact-hero-lockup Alignment=Center */
+  --hero-illustration-width: 408px; /* Hero Style=Simple with illustration */
+  --hero-breadcrumb-row: 72px; /* i-breadcrumbs row above Simple heroes */
+  --tag-height: 32px; /* i-tag Size=32 */
+  --center-copy-max-width: 728px; /* S08 body */
+  --hero-button-min-width: 144px;
+
+  /* component sizes */
+  --button-height-lg: 56px; /* i-button Size=56px */
+  --button-height-md: 40px; /* i-button Size=40px */
+  --icon-size: 24px;
+  --icon-size-sm: 16px;
+  --nav-topbar-height: 32px;
+  --nav-main-height: 64px;
+  --nav-height: 96px;
+}
+
+@media (width >= 744px) {
+  :root {
+    --type-display-size: 48px; /* Hero Style=Half (Tablet and Mobile only), 744 */
+    --type-display-line-height: 52px;
+    --page-padding-x: 40px;
+    --container-padding: 40px;
+    --device-width: 744px;
+  }
+}
+
+@media (width >= 1024px) {
+  :root {
+    --page-padding-x: 64px;
+    --container-padding: 48px;
+    --v-spacing-xl: 56px;
+    --v-spacing-m: 24px;
+    --v-spacing-s: 16px;
+    --v-spacing-xs: 8px;
+    --sbs-gutter: 64px;
+    --sbs-thirds-gutter: 48px;
+    --type-heading-l-size: 48px;
+    --type-heading-l-line-height: 52px;
+    --header-button-padding: 16px;
+    --type-display-size: 64px;
+    --type-display-line-height: 68px;
+    --type-section-size: 56px;
+    --type-section-line-height: 56px;
+    --type-product-size: 56px;
+    --type-product-line-height: 56px;
+    --device-width: 1024px;
+  }
+}
+
+@media (width >= 1440px) {
+  :root {
+    --page-padding-x: 96px;
+    --v-spacing-xl: 64px;
+    --sbs-gutter: 120px;
+    --sbs-thirds-gutter: 72px;
+    --device-width: 1440px;
+  }
+}
