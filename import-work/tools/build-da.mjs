@@ -246,8 +246,7 @@ write('en/demo-dynamic.html', doc([
     ['Variation', 'master'],
     ['AEM endpoint', AEM],
     ['Fallback', '/en/demo-mortgage-rates.json'],
-  ])}${block('section-metadata', [['style', 'sand']])}</div>`,
-  `<div>${block('metadata', [
+  ])}${block('section-metadata', [['style', 'sand']])}${block('metadata', [
     ['Title', 'Dynamic content demo | Intact Insurance'],
     ['Description', 'Demo: live TSLA stock quote fetched on every page load and mortgage rates read from an AEM Content Fragment.'],
     ['Robots', 'noindex'],
