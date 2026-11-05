@@ -219,4 +219,39 @@ write('redirects.json', JSON.stringify(sheet([
   { Source: '/en/', Destination: '/en/personal-insurance' },
   { Source: '/index', Destination: '/en/personal-insurance' },
 ])));
-console.log(`docs 3, sheets 2, media ${media.size} -> ${OUT}`);
+
+// demo page: live stock quote + Content Fragment rates read from the local AEM (fallback sheet)
+const CF_FIELDS = {
+  title: 'Mortgage financing rates (Demo, fallback)',
+  effectiveDate: '2026-11-05',
+  fixed1Rate: '5.79',
+  fixed1Apr: '5.84',
+  fixed3Rate: '4.59',
+  fixed3Apr: '4.63',
+  fixed5Rate: '4.39',
+  fixed5Apr: '4.42',
+  variable5Rate: '4.95',
+  variable5Apr: '4.99',
+  disclaimer: 'DEMO VALUES ONLY - static fallback shown when the local AEM is not reachable. These are not actual Intact rates or an offer of credit.',
+};
+write('en/demo-dynamic.html', doc([
+  '<div><h1>Dynamic content demo</h1><p>Two Edge Delivery blocks that read data at page load: a live stock quote from a public market data service, and mortgage rates authored in an AEM Content Fragment. Demo values only.</p></div>',
+  `<div>${block('stock-quote', [
+    ['Ticker', 'TSLA'],
+    ['Title', 'Tesla, Inc. (TSLA)'],
+    ['Note', 'Price in US dollars (USD), fetched live on every page load. Demo only, not investment advice.'],
+  ])}</div>`,
+  `<div>${block('cf-rates', [
+    ['Content Fragment', '/content/dam/intact/demo/mortgage-rates'],
+    ['Variation', 'master'],
+    ['AEM endpoint', AEM],
+    ['Fallback', '/en/demo-mortgage-rates.json'],
+  ])}${block('section-metadata', [['style', 'sand']])}</div>`,
+  `<div>${block('metadata', [
+    ['Title', 'Dynamic content demo | Intact Insurance'],
+    ['Description', 'Demo: live TSLA stock quote fetched on every page load and mortgage rates read from an AEM Content Fragment.'],
+    ['Robots', 'noindex'],
+  ])}</div>`,
+].join('')));
+write('en/demo-mortgage-rates.json', JSON.stringify(sheet([CF_FIELDS])));
+console.log(`docs 4, sheets 3, media ${media.size} -> ${OUT}`);
